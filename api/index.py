@@ -15,10 +15,11 @@ This file exists so you can see the *actual* error Vercel throws,
 rather than guessing. Once you hit the wall, the recommended fix is
 to move to Hugging Face Spaces / Render / Railway instead.
 """
-
+import os
+os.environ["HOME"] = "/tmp"
+os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
 import base64
 import io
-
 from flask import Flask, request, jsonify
 import cv2
 import numpy as np
