@@ -1,0 +1,60 @@
+Vercel Setup - How to Add This to Your Repo
+=============================================
+
+These files let Vercel attempt to build your app as a Python serverless
+function. I expect this to fail (see warning in api/index.py) due to
+platform limits, but this will show you the exact error instead of
+guessing.
+
+FILES IN THIS FOLDER
+----------------------
+  vercel.json       - tells Vercel this is a Python function
+  api/index.py       - minimal Flask API wrapping FastALPR
+  requirements.txt   - Python dependencies for the function
+
+
+HOW TO ADD TO YOUR EXISTING GITHUB REPO
+------------------------------------------
+1. Copy these 3 items into the ROOT of your
+   "Smart-Number-plate-Detection" repo folder on your PC:
+       vercel.json
+       api/  (the whole folder, containing index.py)
+       requirements.txt   <- if you already have one at root, you'll
+                              need to merge/replace it with this one,
+                              since it also needs "flask" and "numpy"
+
+2. You also need the fast_alpr package folder itself in the repo root
+   (copy it from your fast-alpr-master project if it's not already
+   there):
+       fast_alpr/
+
+   Your repo root should now look like:
+       vercel.json
+       requirements.txt
+       api/
+         index.py
+       fast_alpr/
+         __init__.py
+         alpr.py
+         ... (rest of the package)
+
+3. Commit and push:
+       git add .
+       git commit -m "Add Vercel config"
+       git push
+
+4. Vercel will auto-detect the push and redeploy (since it's already
+   connected to your GitHub repo, based on your build log).
+
+5. Watch the build log in the Vercel dashboard. Likely outcomes:
+   a) Build fails during "Installing dependencies" - probably a
+      size limit or a package build error (onnxruntime/opencv can be
+      picky in constrained build environments).
+   b) Build succeeds but the function fails/times out on first
+      request - probably a cold-start timeout while loading the ONNX
+      models.
+   c) You get a "Serverless Function exceeded maximum size" error -
+      this is the most likely outcome given the dependencies.
+
+Paste me whatever error you get and I'll confirm exactly what's
+happening - but going in, expect one of the above.
