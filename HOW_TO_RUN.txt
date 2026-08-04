@@ -1,0 +1,55 @@
+FastALPR - How to Run (Windows)
+================================
+
+ONE-TIME SETUP
+---------------
+1. Make sure Python 3.10+ is installed (https://www.python.org/downloads/)
+   During install, check "Add python.exe to PATH".
+
+2. Double-click "setup.bat" in this folder.
+   This creates a virtual environment and installs everything needed.
+   (Takes a few minutes. Requires internet connection.)
+
+
+RUNNING ON AN IMAGE
+---------------------
+1. Open PowerShell in this folder.
+2. Activate the environment:
+       venv\Scripts\Activate.ps1
+3. Run on the sample image:
+       python run_image.py
+   Or on your own image:
+       python run_image.py --input path\to\your\image.jpg --output result.png
+
+
+RUNNING ON A VIDEO (many cars on a road, etc.)
+------------------------------------------------
+1. Copy your video into this folder, e.g. "traffic.mp4"
+2. Open PowerShell in this folder.
+3. Activate the environment:
+       venv\Scripts\Activate.ps1
+4. Run:
+       python run_video.py --input traffic.mp4 --output output_video.mp4
+
+   This will:
+     - Show a live preview window while it processes (press 'q' to stop early)
+     - Save an annotated copy of the video to output_video.mp4
+     - Print each new license plate it detects
+     - Print a full summary list of all plates found at the end
+
+   To disable the live preview window (e.g. running on a server):
+       python run_video.py --input traffic.mp4 --no-preview
+
+   To use your webcam instead of a video file:
+       python run_video.py --input 0
+
+
+NOTES
+------
+- First run downloads AI model files automatically (needs internet), then
+  they're cached locally and reused on future runs (even offline).
+- Processing speed depends on your CPU and video resolution/length.
+  Try a short 10-15 second clip first to confirm everything works.
+- If PowerShell blocks the activation script, run this once:
+      Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  then try activating again.
